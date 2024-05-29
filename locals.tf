@@ -1,5 +1,5 @@
 locals {
-  env      = "prod"
+  env      = "daniel-portfolio"
   region   = "ap-south-1"
   zone_one = "ap-south-1a"
   zone_two = "ap-south-1b"

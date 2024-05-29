@@ -15,8 +15,8 @@ resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
 
   route {
-    cidr_block     = local.everywhere
-    nat_gateway_id = aws_internet_gateway.igw.id
+    cidr_block = local.everywhere
+    gateway_id = aws_internet_gateway.igw.id
   }
 
   tags = {

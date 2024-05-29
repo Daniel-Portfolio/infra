@@ -27,7 +27,7 @@ terraform {
 }
 
 provider "aws" {
-  region = local.eks_name
+  region = local.region
 
   default_tags {
     tags = {
