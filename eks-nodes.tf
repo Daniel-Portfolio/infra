@@ -1,20 +1,19 @@
 resource "aws_iam_role" "nodes" {
-  name = "${local.env}-${local.eks_name}-eks-nodes"
+  name = "${local.cluster_name}-eks-nodes"
 
-  assume_role_policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
+  assume_role_policy = jsonencode(
+    {
+      "Version" : "2012-10-17",
+      "Statement" : [
         {
-            "Effect": "Allow",
-            "Action": "sts:AssumeRole",
-            "Principal": {
-                "Service": "ec2.amazonaws.com"
-            }
+          "Effect" : "Allow",
+          "Action" : "sts:AssumeRole",
+          "Principal" : {
+            "Service" : "ec2.amazonaws.com"
+          }
         }
-    ]
-}
-EOF
+      ]
+  })
 }
 
 
@@ -31,8 +30,8 @@ resource "aws_iam_role_policy_attachment" "aws_eks_cni_policy" {
 resource "aws_iam_role_policy_attachment" "aws_eks_ecr_read_only_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
   role       = aws_iam_role.nodes.name
-
 }
+
 
 resource "aws_eks_node_group" "nodes" {
   cluster_name    = aws_eks_cluster.eks.name
@@ -72,3 +71,4 @@ resource "aws_eks_node_group" "nodes" {
     ignore_changes = [scaling_config[0].desired_size]
   }
 }
+

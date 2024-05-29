@@ -1,20 +1,20 @@
 resource "aws_iam_role" "eks" {
-  name               = "${local.env}-${local.eks_name}-eks-cluster"
-  assume_role_policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
+  name = "${local.cluster_name}-eks-cluster"
+  assume_role_policy = jsonencode(
+    {
+      "Version" : "2012-10-17",
+      "Statement" : [
         {
-            "Effect": "Allow",
-            "Action": "sts:AssumeRole",
-            "Principal": {
-                "Service": "eks.amazonaws.com"
-            }
+          "Effect" : "Allow",
+          "Action" : "sts:AssumeRole",
+          "Principal" : {
+            "Service" : "eks.amazonaws.com"
+          }
         }
-    ]
+      ]
+  })
 }
-EOF
-}
+
 
 resource "aws_iam_role_policy_attachment" "eks" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
@@ -23,7 +23,7 @@ resource "aws_iam_role_policy_attachment" "eks" {
 
 
 resource "aws_eks_cluster" "eks" {
-  name     = "${local.env}-${local.eks_name}"
+  name     = local.cluster_name
   version  = local.eks_version
   role_arn = aws_iam_role.eks.arn
 
