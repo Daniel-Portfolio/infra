@@ -1,5 +1,4 @@
 terraform {
-
   backend "s3" {
     bucket         = "dani-tf-state"
     key            = "portfolio/terraform.tfstate"
@@ -7,7 +6,6 @@ terraform {
     dynamodb_table = "daniel-tf-state-lock"
     encrypt        = true
   }
-
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -26,8 +24,10 @@ terraform {
   }
 }
 
+
+
 provider "aws" {
-  region = local.region
+  region = var.region
 
   default_tags {
     tags = {
@@ -38,16 +38,18 @@ provider "aws" {
   }
 }
 
+
+locals {
+  cluster_name = "${var.env}-${var.eks_name}"
+}
 provider "helm" {
   kubernetes {
-    host                   = aws_eks_cluster.eks.endpoint
-    cluster_ca_certificate = base64decode(aws_eks_cluster.eks.certificate_authority[0].data)
+    host                   = module.eks.cluster.endpoint
+    cluster_ca_certificate = base64decode(module.eks.cluster.certificate_authority[0].data)
     exec {
       api_version = "client.authentication.k8s.io/v1"
       command     = "aws"
-      args        = ["eks", "get-token", "--cluster-name", "${local.cluster_name}"]
+      args        = ["eks", "get-token", "--cluster-name", "${module.eks.cluster.name}"]
     }
   }
 }
-
-
