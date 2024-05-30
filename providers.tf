@@ -39,9 +39,7 @@ provider "aws" {
 }
 
 
-locals {
-  cluster_name = "${var.env}-${var.eks_name}"
-}
+
 provider "helm" {
   kubernetes {
     host                   = module.eks.cluster.endpoint
