@@ -205,7 +205,7 @@ resource "helm_release" "kube_prometheus_stack" {
   repository       = "https://prometheus-community.github.io/helm-charts"
   chart            = "kube-prometheus-stack"
   version          = var.kube_prometheus_stack_version
-  values           = file("${path.module}/files/prometheus-values.yaml")
+  values           = [file("${path.module}/files/prometheus-values.yaml")]
 }
 
 resource "helm_release" "loki_stack" {
@@ -215,6 +215,6 @@ resource "helm_release" "loki_stack" {
   repository       = "https://grafana.github.io/loki/charts"
   chart            = "loki-stack"
   version          = var.loki_stack_version
-  values           = file("${path.module}/files/loki-stack-values.yaml")
+  values           = [file("${path.module}/files/loki-stack-values.yaml")]
   depends_on       = [helm_release.kube_prometheus_stack]
 }
