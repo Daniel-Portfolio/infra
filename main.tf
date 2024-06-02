@@ -9,9 +9,11 @@ module "network" {
 }
 
 module "eks" {
-  source             = "./modules/eks"
-  eks_name           = var.eks_name
-  eks_version        = var.eks_version
-  env                = var.env
-  private_subnet_ids = module.network.private_az_ids
+  source                        = "./modules/eks"
+  eks_name                      = var.eks_name
+  eks_version                   = var.eks_version
+  env                           = var.env
+  private_subnet_ids            = module.network.private_az_ids
+  kube_prometheus_stack_version = var.kube_prometheus_stack_version
+  loki_stack_version            = var.loki_stack_version
 }

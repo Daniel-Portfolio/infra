@@ -62,3 +62,12 @@ variable "eks_version" {
     error_message = "The EKS version must be in the format 'x.y'"
   }
 }
+
+variable "kube_prometheus_stack_version" {
+  description = "The version of the kube-prometheus stack"
+  type        = string
+}
+variable "loki_stack_version" {
+  description = "The version of the kube-prometheus stack"
+  type        = string
+}

@@ -30,3 +30,14 @@ variable "private_subnet_ids" {
     error_message = "At least 2 private subnets must be provided"
   }
 }
+
+variable "kube_prometheus_stack_version" {
+  description = "The version of the kube-prometheus stack"
+  type        = string
+  default     = "v0.3.0"
+}
+variable "loki_stack_version" {
+  description = "The version of the kube-prometheus stack"
+  type        = string
+  default     = "v0.3.0"
+}
