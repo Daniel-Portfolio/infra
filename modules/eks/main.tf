@@ -116,8 +116,6 @@ resource "aws_eks_node_group" "nodes" {
   }
 }
 
-
-
 # -------- CSI-Driver --------
 data "tls_certificate" "eks" {
   url        = aws_eks_cluster.eks.identity[0].oidc[0].issuer
@@ -163,7 +161,6 @@ resource "aws_eks_addon" "csi-driver" {
   addon_version            = "v1.31.0-eksbuild.1"
   service_account_role_arn = aws_iam_role.eks_ebs_csi_driver.arn
 }
-
 
 # -------- Charts --------
 resource "helm_release" "cert_manager" {
@@ -217,4 +214,13 @@ resource "helm_release" "loki_stack" {
   version          = var.loki_stack_version
   values           = [file("${path.module}/files/loki-stack-values.yaml")]
   depends_on       = [helm_release.kube_prometheus_stack]
+}
+
+resource "helm_release" "external_secrets" {
+  name             = "external-secrets"
+  namespace        = "external-secrets"
+  create_namespace = true
+  repository       = "https://charts.external-secrets.io"
+  chart            = "kubernetes-external-secrets"
+  version          = "0.9.18"
 }

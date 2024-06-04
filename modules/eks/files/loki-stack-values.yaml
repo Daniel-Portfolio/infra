@@ -1,0 +1,7 @@
+loki:
+  image:
+    tag: 2.9.7
+  persistence:
+    enabled: true
+    storageClassName:
+    size: 10Gi
